@@ -1,5 +1,6 @@
 import os
 import sys
+import argparse
 import requests
 from dotenv import load_dotenv
 
@@ -21,7 +22,7 @@ def fetch_pr_diff(owner, repo, pr_number):
 
     return response.text
 
-def generate_ai_summary(diff_text):
+def generate_ai_summary(diff_text, model="google/gemini-flash-3.1-lite"):
     api_key = os.getenv("OPENROUTER_API_KEY")
 
     if not api_key:
@@ -49,7 +50,7 @@ PR diff:
             "Content-Type": "application/json",
         },
         json={
-            "model": "google/gemini-3.1-flash-lite",
+            "model": model,
             "messages": [
                 {
                     "role": "user",
@@ -69,11 +70,12 @@ def save_review(summary):
         file.write(summary)
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 main.py <github_pr_url>")
-        return
+    parser = argparse.ArgumentParser(description="AI-powered GitHub PR reviewer")
+    parser.add_argument("pr_url", help="GitHub PR URL")
+    parser.add_argument("--model", default="google/gemini-flash-3.1-lite", help="OpenRouter model to use")
+    args = parser.parse_args()
 
-    pr_url = sys.argv[1]
+    pr_url = args.pr_url
     owner, repo, pr_number = parse_pr_url(pr_url)
 
     print(f"Owner: {owner}")
@@ -84,7 +86,7 @@ def main():
     diff = fetch_pr_diff(owner, repo, pr_number)
 
     print("Generating AI summary...")
-    summary = generate_ai_summary(diff)
+    summary = generate_ai_summary(diff, model=args.model)
 
     print("\n--- AI REVIEW ---\n")
     print(summary)
