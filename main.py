@@ -22,7 +22,7 @@ def fetch_pr_diff(owner, repo, pr_number):
 
     return response.text
 
-def generate_ai_summary(diff_text, model="google/gemini-flash-3.1-lite"):
+def generate_ai_summary(diff_text, model="google/gemini-3.1-flash-lite"):
     api_key = os.getenv("OPENROUTER_API_KEY")
 
     if not api_key:
@@ -72,7 +72,7 @@ def save_review(summary):
 def main():
     parser = argparse.ArgumentParser(description="AI-powered GitHub PR reviewer")
     parser.add_argument("pr_url", help="GitHub PR URL")
-    parser.add_argument("--model", default="google/gemini-flash-3.1-lite", help="OpenRouter model to use")
+    parser.add_argument("--model", default="google/gemini-3.1-flash-lite", help="OpenRouter model to use")
     args = parser.parse_args()
 
     pr_url = args.pr_url

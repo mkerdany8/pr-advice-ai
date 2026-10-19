@@ -1,1 +1,4 @@
 .env
+review.md
+__pycache__/
+*.pyc

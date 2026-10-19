@@ -46,7 +46,7 @@ Get a key at [openrouter.ai](https://openrouter.ai). `.env` is gitignored and is
 python3 main.py https://github.com/owner/repo/pull/123
 
 # Pick a different model
-python3 main.py https://github.com/owner/repo/pull/123 --model anthropic/claude-sonnet-4
+python3 main.py https://github.com/owner/repo/pull/123 --model google/gemini-3.1-flash-lite-preview
 ```
 
 Any model slug available on OpenRouter works.
